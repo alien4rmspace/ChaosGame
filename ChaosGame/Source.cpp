@@ -1,5 +1,7 @@
 // Include important C++ libraries here
 #include "StartScreen.h"
+#include "MovingSprite.h"
+
 
 #include <sstream>
 #include <vector>
@@ -51,6 +53,11 @@ Settings
   asteroidBelt.setTexture(asteroidBeltTexture);
   asteroidBelt.setScale(0.4, 0.4);
 
+  MovingSprite movingSpriteAsteroid_0(window, asteroidBeltTexture, Vector2f(1600, 0), Vector2f(0, 1080), 1.0, 0.2);
+  MovingSprite movingSpriteAsteroid_1(window, asteroidBeltTexture, Vector2f(1240, 50), Vector2f(0, 1080), 1.3, 0.3);
+  MovingSprite movingSpriteAsteroid_2(window, asteroidBeltTexture, Vector2f(800, 100), Vector2f(0, 1080), 1.1, 0.4);
+  MovingSprite movingSpriteAsteroid_3(window, asteroidBeltTexture, Vector2f(200, 300), Vector2f(0, 1080), 0.9, 0.5);
+  MovingSprite movingSpriteAsteroid_4(window, asteroidBeltTexture, Vector2f(1600, 600), Vector2f(0, 1080), 2.0, 0.6);
 
   // Create sound objects
   SoundBuffer beginningSoundBuffer;
@@ -186,12 +193,17 @@ Draw
     window.clear();
 
     startScreen.DisplayBackGround();
+
+    movingSpriteAsteroid_0.Update(deltaTimeSeconds);
+    movingSpriteAsteroid_1.Update(deltaTimeSeconds);
+    movingSpriteAsteroid_2.Update(deltaTimeSeconds);
+    movingSpriteAsteroid_3.Update(deltaTimeSeconds);
+    movingSpriteAsteroid_4.Update(deltaTimeSeconds);
+
     startScreen.DisplayGameTitle();
     startScreen.DisplayPrompt();
     startScreen.Update(deltaTimeSeconds);
-
-    window.draw(asteroidBelt);
-
+    
     for (int i = 0; i < vertices.size(); i++)
     {
       int centeringAdjustment = 25;

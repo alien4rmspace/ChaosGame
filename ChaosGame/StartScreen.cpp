@@ -34,10 +34,10 @@ void StartScreen::Update(float deltaTime) {
   int centerWindowPosx = windowSizex / 2 - 200;
   int centerWindowPosy = windowSizey / 2 - 100;
   if (newPosition.x <= centerWindowPosx) {
-    newPosition.x = currentPosition.x + 150 * deltaTime;
+    newPosition.x = currentPosition.x + 200 * deltaTime;
   }
   if (newPosition.y <= centerWindowPosy) {
-    newPosition.y = currentPosition.y + 200 * deltaTime;
+    newPosition.y = currentPosition.y + 300 * deltaTime;
 
   }
 
