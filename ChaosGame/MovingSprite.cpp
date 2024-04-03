@@ -36,7 +36,6 @@ void MovingSprite::Update(float deltaTime) {
 
 
 	this->sprite->setPosition(this->position);
-	cout << this->position.x << endl;
 	if (!(this->position.x < 0)) {
 		window.draw(*sprite);
 	}

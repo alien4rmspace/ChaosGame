@@ -19,7 +19,7 @@ StartScreen::StartScreen(RenderWindow& window) : window(window) {
   userPrompt.setFont(font);
   userPrompt.setString("");
   userPrompt.setCharacterSize(20);
-  userPrompt.setFillColor(Color::Red);
+  userPrompt.setFillColor(Color::White);
   userPrompt.setPosition(100, 100);
 
   Vector2u windowSize = window.getSize();
@@ -62,7 +62,7 @@ void StartScreen::PromptTypeWrite() {
                                  "on the screen to create a triangle using the left\n"
                                  "mouse button.\n"
                                  "Then you will select a 4th point to begin...\n"
-                                 "\n\t\t\t\t\t\tTHE CHAOS";
+                                 "\n\t\t\t\t\t\t\t\tTHE CHAOS";
   String gamePromptString = "";
   for (auto ch : userPromptDescription) {
     gamePromptString += ch;
