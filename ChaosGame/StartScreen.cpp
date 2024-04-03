@@ -7,7 +7,7 @@ StartScreen::StartScreen(RenderWindow& window) : window(window) {
   startScreen.setScale(3.1, 3.1);
 
   if (!font.loadFromFile("Fonts/Power Smash.ttf")) {
-    cout << "Oh shit font didn't load" << endl;
+    cout << "Oh caca, font didn't load" << endl;
   }
 
   gameTitle.setFont(font);

@@ -9,7 +9,7 @@
 #include <random>
 
 void playBackgroundSound(Sound& backgroundSound, int delaySeconds) {
-  std::this_thread::sleep_for(std::chrono::seconds(delaySeconds));
+  this_thread::sleep_for(chrono::seconds(delaySeconds));
   backgroundSound.play();
 }
 
@@ -55,6 +55,7 @@ Settings
   StartScreen startScreen(window);
 
   // Create sprites
+  // 16,000 is max pixel X size
   Texture asteroidTexture;
   asteroidTexture.loadFromFile("Images/asteroid.png");
   Sprite asteroid;
@@ -219,9 +220,9 @@ Handle the players input
             points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
             startGeneratingSound.play();
             displayUserPrompt = false;
-            illuminatiTriangleTimerStart = true; // starts timer when to play illuminati scenario
 
             illuminatiTriangleClock.restart(); //restarts clock to time when generation starts.
+            illuminatiTriangleTimerStart = true; // starts timer when to play illuminati scenario
           }
         }
       }
@@ -388,6 +389,7 @@ Draw
     }
 
     window.display();
+    this_thread::sleep_for(chrono::milliseconds(1));
   }
 
   backgroundSoundThread.join();
