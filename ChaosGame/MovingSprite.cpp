@@ -8,6 +8,7 @@ MovingSprite::MovingSprite(RenderWindow& window, Texture& texture, Vector2f posi
 	this->sprite = sprite;
 }
 void MovingSprite::Update(float deltaTime) {
+	if (!(this->position.x < 0)){
 	int xDifference = this->position.x - this->endPosition.x;
 	int yDifference = this->position.y - this->endPosition.y;
 
@@ -36,7 +37,6 @@ void MovingSprite::Update(float deltaTime) {
 
 
 	this->sprite->setPosition(this->position);
-	if (!(this->position.x < 0)) {
-		window.draw(*sprite);
+	window.draw(*sprite);
 	}
 }

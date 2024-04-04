@@ -3,7 +3,6 @@
 #include "MovingSprite.h"
 #include "AnimatedSprite.h"
 
-
 #include <sstream>
 #include <vector>
 #include <random>
@@ -24,6 +23,8 @@ Vector2f findTriangleCenter(Vector2f a, Vector2f b, Vector2f c) {
 using namespace sf;
 using namespace std;
 
+const float kFrameRate = 60.0f;
+
 int main()
 {
   /*
@@ -32,7 +33,8 @@ Settings
 ****************************************
 */
 
-  int verticesAmount = 3;
+  int sleepPerFrame = 10;
+  unsigned short int verticesAmount = 3;
   bool displayUserPrompt = true;
   bool howardTimerStart = false;
   bool showHoward = false;
@@ -40,10 +42,35 @@ Settings
   bool xFilePlayed = false;
   bool illuminatiTriangleTimerStart = false;
   bool showIlluminatiTriangle = false;
-  bool showFireworks = false;
-  bool showGuests = false;
+	bool showFireworks = false;
+	bool showGuests = false;
 
-  // Create a video mode object
+  Vector2f illuminatiTriangleMaxScaleSize(1.5, 1.5);
+  Vector2f illuminatiTriangleCurrentScaleSize;
+  float illuminatiTriangleScaleSizeSpeed = 2;
+  float illuminatiTriangleRotateSpeed = 3.545;
+
+  Vector2f howardMaxScaleSize(2.5, 2.5);
+	Vector2f howardCurrentScaleSize;
+	float howardScaleSizeSpeed = 1.25; // 1.0019
+	float howardRotateSpeed = 3.79;
+
+  // Overrides variables to be Windows specific
+  // The school's remote Ubunto specs sucks, so this is needed
+#ifdef _WIN32
+	cout << "Setting up Windows option" << endl;
+
+   illuminatiTriangleCurrentScaleSize;
+   illuminatiTriangleScaleSizeSpeed = 2;
+   illuminatiTriangleRotateSpeed = 3.545;
+
+   howardCurrentScaleSize;
+   howardScaleSizeSpeed = 1.0019;
+   howardRotateSpeed = 9;
+#define OS_NAME "Windows"
+#endif
+
+	// Create a video mode object
   VideoMode vm(1920, 1080);
   // Create and open a window for the game
   RenderWindow window(vm, "Chaos Game", Style::Default);
@@ -75,11 +102,11 @@ Settings
 
   Texture howardTheAlienTexture;
   howardTheAlienTexture.loadFromFile("Images/howard_the_alien_sprite_sheet.png");
-  IntRect rectSourceHoward(0, 0, 210, 586);
+  IntRect rectSourceHoward(0, 0, 106, 586);
   Sprite howardTheAlien(howardTheAlienTexture, rectSourceHoward);
-  howardTheAlien.setScale(0.25, 0.25);
-  howardTheAlien.setOrigin(105, 293);
-  AnimatedSprite animatedHoward(window, howardTheAlien, 31710, 210, 21000, 1.6);
+  howardTheAlien.setScale(0.5, 0.5);
+  howardTheAlien.setOrigin(53, 293);
+  AnimatedSprite animatedHoward(window, howardTheAlien, 16006, 106, 9603, 1.6);
 
   Texture illuminatiEyeTexture;
   illuminatiEyeTexture.loadFromFile("Images/illuminati_eye.png");
@@ -109,7 +136,7 @@ Settings
   IntRect rectSourceSquidward(0, 0, 200, 498);
   Sprite squidwardDancing{ squidwardDancingTexture, rectSourceSquidward };
   AnimatedSprite animatedSquidward(window, squidwardDancing, 10200, 200, 0);
-  squidwardDancing.setPosition(200, 500);
+  squidwardDancing.setPosition(200, 350);
   squidwardDancing.setScale(1.5, 1.5);
 
   Texture kidDancingTexture;
@@ -117,9 +144,17 @@ Settings
   IntRect rectSourceKidDancing(0, 0, 250, 270);
   Sprite kidDancing{ kidDancingTexture, rectSourceKidDancing };
   AnimatedSprite animatedKidDancing(window, kidDancing, 30500, 250, 20000, 2);
-  kidDancing.setPosition(1400, 600);
+  kidDancing.setPosition(1400, 400);
   kidDancing.setScale(1.5, 1.5);
   kidDancing.setRotation(10);
+
+#ifdef _WIN32
+  kidDancing.setPosition(1400, 600);
+
+
+  squidwardDancing.setPosition(200, 500);
+#define OS_NAME "Windows"
+#endif
 
   MovingSprite movingSpriteAsteroid_0(window, shootingAsteroidTexture, Vector2f(1600, 0), Vector2f(0, 1080), 1.0, 0.2);
   MovingSprite movingSpriteAsteroid_1(window, shootingAsteroidTexture, Vector2f(1240, 50), Vector2f(0, 1080), 0.63, 0.3);
@@ -237,16 +272,20 @@ Update
 ****************************************
 */
     Time deltaTime = clock.restart(); // restart() resets the clock and returns time elapsed
+    float frameTime = 1.0f / kFrameRate;
     float deltaTimeSeconds = deltaTime.asSeconds();
+
+    // Cap the delta time to maintain a maximum FPS of 60
+    float maxDeltaTime = 1.0f / 60.0f;
+    deltaTimeSeconds = min(deltaTimeSeconds, maxDeltaTime);
 
     if (points.size() > 0)
     {
       ///generate more point(s)
       ///select random vertex
       ///calculate midpoint between random vertex and the last point in the vector
-      ///push back the newly generated coord.
+      ///push back the newly generated coord.      
       Vector2f randomVertex = vertices[dist(mt)]; // dist(mt) uses the range we set above.
-      
       if (verticesAmount == 4) {
         while (randomVertex == lastVertices) {
           randomVertex = vertices[dist(mt)];
@@ -255,12 +294,13 @@ Update
       }
 
       Vector2f lastPoint = points[points.size() - 1];
-      
+
       float x = (randomVertex.x + lastPoint.x) / 2.f;
       float y = (randomVertex.y + lastPoint.y) / 2.f;
 
       Vector2f newPoint(x, y);
       points.push_back(newPoint);
+
     }
 
     /*
@@ -282,6 +322,23 @@ Update Illuminati Triangle Scenario
           illuminatiEye.setPosition(triangleCenter);
         }
       }
+      if (showIlluminatiTriangle) {
+        illuminatiTriangleCurrentScaleSize = illuminatiEye.getScale();
+        if (illuminatiTriangleCurrentScaleSize.x < illuminatiTriangleMaxScaleSize.x || illuminatiTriangleCurrentScaleSize.y < illuminatiTriangleMaxScaleSize.y) {
+          illuminatiEye.scale(Vector2f(1 + illuminatiTriangleScaleSizeSpeed * deltaTimeSeconds, 1 + illuminatiTriangleScaleSizeSpeed * deltaTimeSeconds));
+          illuminatiEye.rotate(1 + (illuminatiTriangleRotateSpeed * deltaTimeSeconds));
+
+        }
+        else {
+          illuminatiEye.setRotation(0);
+        }
+
+        if ((illuminatiTriangleClock.getElapsedTime().asSeconds() > 14) && showHoward == false) {
+          xFile.stop();
+
+          showHoward = true;
+        }
+      }
     }
 
     /*
@@ -289,29 +346,26 @@ Update Illuminati Triangle Scenario
 Update Harold Entrance Scenario
 ****************************************
 */
-
-		if (showHoward) {
-			if (!howardEntranceSongPlayed) {
-				howardEntranceSound.play();
-				howardEntranceSongPlayed = true;
+    if (showHoward) {
+      if (!howardEntranceSongPlayed) {
+        howardEntranceSound.play();
+        howardEntranceSongPlayed = true;
 
         Vector2f howardPosition = illuminatiEye.getPosition();
         howardTheAlien.setPosition(howardPosition);
-			}
+      }
 
-      Vector2f maxScaleSize(2.5, 2.5);
-      Vector2f currentScaleSize(howardTheAlien.getScale());
-      float scaleSizeSpeed = 1.00377;
-      float rotateSpeed = 0.589;
-      if (currentScaleSize.x < maxScaleSize.x || currentScaleSize.y < maxScaleSize.y) {
-        howardTheAlien.scale(scaleSizeSpeed, scaleSizeSpeed);
-        howardTheAlien.rotate(rotateSpeed);
+      howardCurrentScaleSize = howardTheAlien.getScale();
+      if (howardCurrentScaleSize.x < howardMaxScaleSize.x) {
+        howardTheAlien.scale(Vector2f(1 + howardScaleSizeSpeed * deltaTimeSeconds, 1 + howardScaleSizeSpeed * deltaTimeSeconds));
+        howardTheAlien.rotate(howardRotateSpeed * (1 + deltaTimeSeconds));
 
       }
       else {
         showFireworks = true;
         showGuests = true;
         showIlluminatiTriangle = false;
+        howardTheAlien.setRotation(0);
       }
     }
 
@@ -333,15 +387,29 @@ Draw
       startScreen.Update(deltaTimeSeconds);
     }
 
-    for (int i = 0; i < vertices.size(); i++)
-    {
-      int centeringAdjustment = 25;
-      stars.setPosition(Vector2f(vertices[i].x - centeringAdjustment, vertices[i].y - centeringAdjustment));
+    // old for loop for the stars
+    //for (int i = 0; i < vertices.size(); i++)
+    //{
+    //  int centeringAdjustment = 25;
+    //  stars.setPosition(Vector2f(vertices[i].x - centeringAdjustment, vertices[i].y - centeringAdjustment));
+    //  window.draw(stars);
+    //}
+
+    // old for loop for the asteroids
+    //for (int i = 0; i < points.size(); i++) {
+    //  asteroid.setPosition(points[i]);
+    //  window.draw(asteroid);
+    //}
+
+    // updated for loop, optimized for better performance
+    int centeringAdjustment = 25; // adjustment to center the stars.
+    for (const auto& vertice : vertices) {
+      stars.setPosition(Vector2f(vertice.x - centeringAdjustment, vertice.y - centeringAdjustment));
       window.draw(stars);
     }
 
-    for (int i = 0; i < points.size(); i++) {
-      asteroid.setPosition(points[i]);
+    for (const auto& point : points) {
+      asteroid.setPosition(point);
       window.draw(asteroid);
     }
 
@@ -354,22 +422,6 @@ Draw
 
     if (showIlluminatiTriangle) {
       window.draw(illuminatiEye);
-
-      Vector2f maxScaleSize(1.5, 1.5);
-      Vector2f currentScaleSize(illuminatiEye.getScale());
-      float scaleSizeSpeed = 1.005;
-      float rotateSpeed = 0.716;
-      if (currentScaleSize.x < maxScaleSize.x || currentScaleSize.y < maxScaleSize.y) {
-        illuminatiEye.scale(scaleSizeSpeed, scaleSizeSpeed);
-        illuminatiEye.rotate(rotateSpeed);
-
-      }
-
-      if (illuminatiTriangleClock.getElapsedTime().asSeconds() > 14) {
-        xFile.stop();
-
-        showHoward = true;
-      }
     }
 
     if (showHoward) {
@@ -389,11 +441,13 @@ Draw
     }
 
     window.display();
-    this_thread::sleep_for(chrono::milliseconds(1));
+    // Thread sleep is needed to stabilize program performance across different specs
+    //this_thread::sleep_for(chrono::milliseconds(sleepPerFrame));
   }
 
   backgroundSoundThread.join();
   typeWriteTitleThread.join();
   typeWritePromptThread.join();
+
   return 0;
 }

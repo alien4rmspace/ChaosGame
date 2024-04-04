@@ -14,6 +14,10 @@ public:
 	MovingSprite(RenderWindow& window, Texture& texture, Vector2f position, Vector2f endPosition, float moveSpeed = 1, float scale = 1.0f);
 	void Update(float deltatime);
 
+	~MovingSprite() {
+		delete sprite;
+	}
+
 private:
 	float moveSpeed;
 	float scale;
