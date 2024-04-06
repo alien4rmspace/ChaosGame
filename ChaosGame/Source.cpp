@@ -50,25 +50,10 @@ Settings
   float illuminatiTriangleScaleSizeSpeed = 2;
   float illuminatiTriangleRotateSpeed = 3.545;
 
-  Vector2f howardMaxScaleSize(2.5, 2.5);
+  Vector2f howardMaxScaleSize(5, 5);
 	Vector2f howardCurrentScaleSize;
-	float howardScaleSizeSpeed = 1.25; // 1.0019
-	float howardRotateSpeed = 3.79;
-
-  // Overrides variables to be Windows specific
-  // The school's remote Ubunto specs sucks, so this is needed
-#ifdef _WIN32
-	cout << "Setting up Windows option" << endl;
-
-   illuminatiTriangleCurrentScaleSize;
-   illuminatiTriangleScaleSizeSpeed = 2;
-   illuminatiTriangleRotateSpeed = 3.545;
-
-   howardCurrentScaleSize;
-   howardScaleSizeSpeed = 1.0019;
-   howardRotateSpeed = 9;
-#define OS_NAME "Windows"
-#endif
+	float howardScaleSizeSpeed = 1.8;
+	float howardRotateSpeed = 45;
 
 	// Create a video mode object
   VideoMode vm(1920, 1080);
@@ -94,6 +79,7 @@ Settings
   Sprite stars;
   stars.setTexture(starsTexture);
   stars.setScale(0.2, 0.2);
+  stars.setOrigin(128, 128);
 
   Texture shootingAsteroidTexture;
   shootingAsteroidTexture.loadFromFile("Images/asteroidbelt.png");
@@ -104,9 +90,9 @@ Settings
   howardTheAlienTexture.loadFromFile("Images/howard_the_alien_sprite_sheet.png");
   IntRect rectSourceHoward(0, 0, 106, 586);
   Sprite howardTheAlien(howardTheAlienTexture, rectSourceHoward);
-  howardTheAlien.setScale(0.5, 0.5);
+  howardTheAlien.setScale(0.25, 0.25);
   howardTheAlien.setOrigin(53, 293);
-  AnimatedSprite animatedHoward(window, howardTheAlien, 16006, 106, 9603, 1.6);
+  AnimatedSprite animatedHoward(window, howardTheAlien, 16006, 106, 8480, 1.6);
 
   Texture illuminatiEyeTexture;
   illuminatiEyeTexture.loadFromFile("Images/illuminati_eye.png");
@@ -148,9 +134,18 @@ Settings
   kidDancing.setScale(1.5, 1.5);
   kidDancing.setRotation(10);
 
+ // Overrides variables to be Windows specific
+// The school's remote Ubunto specs sucks, so this is needed
 #ifdef _WIN32
-  kidDancing.setPosition(1400, 600);
+  cout << "Setting up Windows option" << endl;
 
+  illuminatiTriangleScaleSizeSpeed = 2;
+  illuminatiTriangleRotateSpeed = 3.545;
+
+  howardScaleSizeSpeed = 1.25;
+  howardRotateSpeed = 9;
+
+  kidDancing.setPosition(1400, 600);
 
   squidwardDancing.setPosition(200, 500);
 #define OS_NAME "Windows"
@@ -402,9 +397,8 @@ Draw
     //}
 
     // updated for loop, optimized for better performance
-    int centeringAdjustment = 25; // adjustment to center the stars.
     for (const auto& vertice : vertices) {
-      stars.setPosition(Vector2f(vertice.x - centeringAdjustment, vertice.y - centeringAdjustment));
+      stars.setPosition((vertice.x), (vertice.y));
       window.draw(stars);
     }
 
