@@ -6,7 +6,7 @@ StartScreen::StartScreen(RenderWindow& window) : window(window) {
   startScreen.setPosition(0.f, 0.f);
   startScreen.setScale(3.1, 3.1);
 
-  if (!font.loadFromFile("Fonts/Power Smash.ttf")) {
+  if (!font.loadFromFile("Fonts/Debug.otf")) {
     cout << "Oh caca, font didn't load" << endl;
   }
 
@@ -62,7 +62,7 @@ void StartScreen::PromptTypeWrite() {
                                  "on the screen to create a triangle using the left\n"
                                  "mouse button.\n"
                                  "Then you will select a 4th point to begin...\n"
-                                 "\n\t\t\t\t\t\t\t\tTHE CHAOS";
+                                 "\n\t\t\t\t\t\t\tTHE CHAOS";
   String gamePromptString = "";
   for (auto ch : userPromptDescription) {
     gamePromptString += ch;
