@@ -1,8 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include <iostream>
+
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace sf;
@@ -10,7 +12,7 @@ using namespace sf;
 class TextureManager {
 public:
 	TextureManager() {
-
+		cout << "Texture Manager loaded successfully." << endl;
 	}
 	
 	void loadTexture(const string& name, const string& filename);

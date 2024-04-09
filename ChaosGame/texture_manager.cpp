@@ -1,12 +1,12 @@
 #include "texture_manager.h"
 
 void TextureManager::loadTexture(const string& name, const string& filename) {
-	Texture tex;
-	tex.loadFromFile(filename);
+	Texture texture;
+	texture.loadFromFile(filename);
 
-	this->textures[name] = tex;
+	this->textures[name] = texture;
 }
 
-Texture& TextureManager::getRef(const string& texture) {
-	return this->textures.at(texture);
+Texture& TextureManager::getRef(const string& textureName) {
+	return this->textures.at(textureName);
 }

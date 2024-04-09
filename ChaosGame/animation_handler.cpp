@@ -2,7 +2,7 @@
 
 #include "animation_handler.h"
 
-void AnimationHandler::addAnimation(const String& name, Sprite& sprite, IntRect rectSource, int moveRect, int lastRect, int resetRect, float animationSpeed) {
+void AnimationHandler::addAnimation(const String& name, Sprite& sprite, IntRect rectSource, unsigned short int moveRect, unsigned short int lastRect, unsigned short int resetRect, const float animationSpeed) {
 	sprite.setTextureRect(rectSource);
 	animations.emplace(name, Animation{ sprite, rectSource, moveRect, lastRect, resetRect, animationSpeed });
 }

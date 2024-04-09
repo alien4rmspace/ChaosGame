@@ -27,7 +27,7 @@ public:
 	~AnimationHandler() {
 	}
 
-	void addAnimation(const String& name, Sprite& sprite, IntRect rectSource, int moveRect, int lastRect, int resetRect, float animationSpeed);
+	void addAnimation(const String& name, Sprite& sprite, IntRect rectSource, unsigned short int moveRect, unsigned short int lastRect, unsigned short int resetRect, const float animationSpeed);
 	void update(const String& string, const float dt);
 
 private:

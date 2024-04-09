@@ -19,8 +19,8 @@ public:
 	Vector2f calculateTriangleCenter();
 
 private:
-	int maxVertices = 3;
-	int pointsToGenerate = 2;
+	const int kMaxVertices = 3;
+	const int kPointsToGenerate = 2;
 	float timer = 0;
 
 	// This is our rng generator, gives better rng than what we learned in class.
@@ -47,6 +47,4 @@ private:
 	Sound android_sound;
 	Sound x_files_sound;
 	Sound WHAT_DAH_HELL_sound;
-
-	void loadgame();
 };

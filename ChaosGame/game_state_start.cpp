@@ -6,7 +6,7 @@
 #include<thread>
 #include <chrono>
 
-GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, maxVertices - 1) {
+GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVertices - 1) {
 	this->game = game;
 
 	// Assign our sprites
@@ -29,7 +29,7 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, maxVerti
 
 	// Adds animation to our howardTheAlien png sheet.
 	// If you have any questions how the animations work you can ask me - DS
-	animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.05);
+	animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.07);
 
 	// Assign our sounds
 	this->star_sound.setBuffer((this->game->soundManager.getBuffer("star")));
@@ -65,15 +65,17 @@ void GameStateStart::draw(const float dt) {
 }
 
 void GameStateStart::update(const float dt) {
+	// Our points generator
 	if (this->points.size() > 0) {
-		generatePoint(pointsToGenerate);
+		generatePoint(kPointsToGenerate);
 	}
 
 	if (startTimer) {
 		timer += dt;
 	}
+
 	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.
-	int secondsUntilShow = 4;
+	unsigned short int secondsUntilShow = 4;
 	if ((!showIlluminatiTriangle) && (timer > secondsUntilShow)) {
 		illuminatiTriangle.setPosition(calculateTriangleCenter());
 		showIlluminatiTriangle = true;
@@ -118,9 +120,9 @@ void GameStateStart::handleInput() {
 					this->game->window.close();
 					break;
 				}
+				// Spaceholder if we plan to add more screens.
 				if (event.key.code == Keyboard::Space) {
 					cout << "loaded" << endl;
-					this->loadgame();
 					break;
 				}
 			case Event::MouseButtonPressed: {
@@ -130,7 +132,7 @@ void GameStateStart::handleInput() {
 					cout << "mouse y: " << event.mouseButton.y << endl;
 
 					// If our vector has less than 3 vertices, continue selecting vertices.
-					if (this->vertices.size() < this->maxVertices) {
+					if (this->vertices.size() < this->kMaxVertices) {
 						star_sound.play();
 
 						selectVertice(event.mouseButton.x, event.mouseButton.y);
@@ -159,8 +161,9 @@ Vector2f GameStateStart::selectRandomVertice() {
 	return randomVertice;
 }
 
-// Finds a random vertice to pick from that is different from previously,
-// then finds the half way point between that vertice and our last point to push back.
+// Randomly picks a vertice inside our vector that the user selected.
+// Which then finds the half point of the point and the selected vertice to 
+// insert another point into the points vector.
 void GameStateStart::generatePoint(unsigned short int amount) {
 	for (unsigned short i = 0; i < amount; i++)
 	{
@@ -175,6 +178,8 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 	}
 }
 
+// Calculated the center of our triangle. I'm using this as the position reference
+// when spawning in certain sprites.
 Vector2f GameStateStart::calculateTriangleCenter() {
 	float centerX = (this->vertices[0].x + this->vertices[1].x + this->vertices[2].x) / 3.0f;
 	float centerY = (this->vertices[0].y + this->vertices[1].y + this->vertices[2].y) / 3.0f;
@@ -182,7 +187,4 @@ Vector2f GameStateStart::calculateTriangleCenter() {
 	return Vector2f(centerX, centerY);
 }
 
-void GameStateStart::loadgame() {
-	this->game->pushState(new GameStateEditor(this->game));
-}
 

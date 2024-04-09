@@ -12,7 +12,7 @@ using namespace sf;
 class SoundManager {
 public:
 	SoundManager() {
-
+		cout << "Sound Manager loaded successfully.";
 	}
 	~SoundManager();
 
