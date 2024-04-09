@@ -8,19 +8,16 @@ void AnimationHandler::addAnimation(const String& name, Sprite& sprite, IntRect 
 }
 
 void AnimationHandler::update(const String& string, const float dt) {
-	//if (int((time + dt) / duration) > int(time / duration)) {
-	//	// Calculate the frame number
-	//	int frame = int((time + dt) / duration);
-
-	//	frame %= this->animations[currentAnimation].getLength();
-	//}
-
 	Animation& animation = animations.at(string);
+	animation.time += dt;
+	int frame = int(animation.time / animation.animationSpeed);
+
 	if (animation.rectSource.left >= animation.lastRect) {
 		animation.rectSource.left = animation.resetRect;
+		animation.time = 0; // resets the clock
 	}
 	else {
-		animation.rectSource.left += animation.moveRect;
+		animation.rectSource.left = animation.resetRect + (frame * animation.moveRect);
 	}
 	animation.sprite.setTextureRect(animation.rectSource);
 }

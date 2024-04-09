@@ -16,17 +16,23 @@ public:
 	void selectVertice(unsigned short int x, unsigned short int y);
 	Vector2f selectRandomVertice();
 	void generatePoint(unsigned short int amount);
+	Vector2f calculateTriangleCenter();
 
 private:
 	int maxVertices = 3;
 	int pointsToGenerate = 2;
-	float timer;
+	float timer = 0;
+
+	// This is our rng generator, gives better rng than what we learned in class.
+	// If any questions feel free to ask me - DS
 	mt19937 mt;
 	uniform_int_distribution<int> dist;
 
 	bool startTimer = false;
 	bool showIlluminatiTriangle = false;
-
+	bool showHowardTheAlien = false;
+	bool playedXFiles = false;
+	bool playedWHATDAHHELL = false;
 
 	Vector2f vertex;
 	vector<Vector2f> vertices;
@@ -37,10 +43,10 @@ private:
 	Sprite illuminatiTriangle;
 	Sprite howardTheAlien;
 
-	AnimationHandler howardTheAlienAH;
-
 	Sound star_sound;
 	Sound android_sound;
+	Sound x_files_sound;
+	Sound WHAT_DAH_HELL_sound;
 
 	void loadgame();
 };

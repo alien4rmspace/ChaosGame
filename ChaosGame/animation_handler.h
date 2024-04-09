@@ -16,12 +16,13 @@ public:
 	int lastRect;
 	int resetRect;
 	float animationSpeed;
+
+	float time = 0;
 };
 
 class AnimationHandler {
 public:
 	AnimationHandler() {
-		this->time = 0.0f;
 	}
 	~AnimationHandler() {
 	}
@@ -30,6 +31,5 @@ public:
 	void update(const String& string, const float dt);
 
 private:
-	float time;
 	map <String, Animation> animations;
 };

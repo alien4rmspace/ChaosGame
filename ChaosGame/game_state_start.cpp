@@ -19,16 +19,23 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, maxVerti
 	this->asteroid.setScale(0.04, 0.04);
 
 	this->illuminatiTriangle.setTexture(this->game->textureManager.getRef("illuminatiTriangle"));
+	this->illuminatiTriangle.setOrigin(288, 290);
 
 	IntRect rectSourceHoward(0, 0, 106, 586);
 	this->howardTheAlien.setTexture(this->game->textureManager.getRef("howardTheAlien"));
-	
+	howardTheAlien.setPosition(500, 200);
+	howardTheAlien.setOrigin(53, 283);
+	howardTheAlien.setScale(4, 4);
 
-	animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 1.6);
+	// Adds animation to our howardTheAlien png sheet.
+	// If you have any questions how the animations work you can ask me - DS
+	animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.05);
 
 	// Assign our sounds
 	this->star_sound.setBuffer((this->game->soundManager.getBuffer("star")));
 	this->android_sound.setBuffer((this->game->soundManager.getBuffer("android_notification")));
+	this->x_files_sound.setBuffer((this->game->soundManager.getBuffer("x_files")));
+	this->WHAT_DAH_HELL_sound.setBuffer((this->game->soundManager.getBuffer("WHAT_DAH_HELL")));
 }
 
 void GameStateStart::draw(const float dt) {
@@ -47,15 +54,17 @@ void GameStateStart::draw(const float dt) {
 		this->game->window.draw(asteroid);
 	}
 
+	// Draw our sprites
 	if (showIlluminatiTriangle) {
 		this->game->window.draw(illuminatiTriangle);
 	}
 
-	// Draw our animations
-	this->game->window.draw(howardTheAlien);
+	if (showHowardTheAlien) {
+		this->game->window.draw(howardTheAlien);
+	}
 }
 
-void GameStateStart::update(const float dt) {	
+void GameStateStart::update(const float dt) {
 	if (this->points.size() > 0) {
 		generatePoint(pointsToGenerate);
 	}
@@ -63,14 +72,36 @@ void GameStateStart::update(const float dt) {
 	if (startTimer) {
 		timer += dt;
 	}
-	// Check if illuminati triangle is not showing, and if timer exceeds set time until show.
+	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.
 	int secondsUntilShow = 4;
-	if (((showIlluminatiTriangle) == false) && (timer > secondsUntilShow)) {
+	if ((!showIlluminatiTriangle) && (timer > secondsUntilShow)) {
+		illuminatiTriangle.setPosition(calculateTriangleCenter());
 		showIlluminatiTriangle = true;
+
+		if (!playedXFiles) {
+			x_files_sound.play();
+			playedXFiles = true;
+		}
 	}
 
-	// Update howardTheAlien animation
-	animationHandler.update("howardTheAlien", dt);
+	// Same thing similar to our illuminati triangle.
+	secondsUntilShow = 10;
+	if ((!showHowardTheAlien) && (timer > secondsUntilShow)) {
+		howardTheAlien.setPosition(calculateTriangleCenter());
+		showHowardTheAlien = true;
+
+		if (!playedWHATDAHHELL) {
+			WHAT_DAH_HELL_sound.play();
+			x_files_sound.stop();
+			playedWHATDAHHELL = true;
+		}
+	}
+	
+	// While Howard is out and about, we update the IntRect with the animationHandler.
+	if (showHowardTheAlien) {
+		animationHandler.update("howardTheAlien", dt);
+
+	}
 }
 
 void GameStateStart::handleInput() {
@@ -144,6 +175,12 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 	}
 }
 
+Vector2f GameStateStart::calculateTriangleCenter() {
+	float centerX = (this->vertices[0].x + this->vertices[1].x + this->vertices[2].x) / 3.0f;
+	float centerY = (this->vertices[0].y + this->vertices[1].y + this->vertices[2].y) / 3.0f;
+
+	return Vector2f(centerX, centerY);
+}
 
 void GameStateStart::loadgame() {
 	this->game->pushState(new GameStateEditor(this->game));
