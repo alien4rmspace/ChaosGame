@@ -11,7 +11,6 @@
 class GameState {
 public:
 	Game* game;
-	AnimationHandler animationHandler;
 
 	virtual void draw(const float dt) = 0;
 	virtual void update(const float dt) = 0;

@@ -29,7 +29,7 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 
 	// Adds animation to our howardTheAlien png sheet.
 	// If you have any questions how the animations work you can ask me - DS
-	animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.07);
+	this->game->animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.07);
 
 	// Assign our sounds
 	this->star_sound.setBuffer((this->game->soundManager.getBuffer("star")));
@@ -101,7 +101,7 @@ void GameStateStart::update(const float dt) {
 	
 	// While Howard is out and about, we update the IntRect with the animationHandler.
 	if (showHowardTheAlien) {
-		animationHandler.update("howardTheAlien", dt);
+		this->game->animationHandler.update("howardTheAlien", dt);
 
 	}
 }

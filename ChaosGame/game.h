@@ -25,6 +25,7 @@ public:
 	TextureManager textureManager;
 	Sprite background;
 	SoundManager soundManager;
+	AnimationHandler animationHandler;
 
 	void pushState(GameState* state);
 	void popState();
