@@ -23,16 +23,16 @@ private:
 	const int kPointsToGenerate = 2;
 	float timer = 0;
 
-	// This is our rng generator, gives better rng than what we learned in class.
-	// If any questions feel free to ask me - DS
-	mt19937 mt;
-	uniform_int_distribution<int> dist;
-
 	bool startTimer = false;
 	bool showIlluminatiTriangle = false;
 	bool showHowardTheAlien = false;
 	bool playedXFiles = false;
 	bool playedWHATDAHHELL = false;
+
+	// This is our rng generator, gives better rng than what we learned in class.
+// If any questions feel free to ask me - DS
+	mt19937 mt;
+	uniform_int_distribution<int> dist;
 
 	Vector2f vertex;
 	vector<Vector2f> vertices;
@@ -47,4 +47,6 @@ private:
 	Sound android_sound;
 	Sound x_files_sound;
 	Sound WHAT_DAH_HELL_sound;
+
+	TextManager textManager;
 };

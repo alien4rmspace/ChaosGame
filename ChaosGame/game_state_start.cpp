@@ -1,13 +1,15 @@
 #include "game_state_start.h"
 
 #include "game_state_editor.h"
-#include "animation_handler.h"
 
 #include<thread>
 #include <chrono>
 
 GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVertices - 1) {
 	this->game = game;
+
+	// Create our texts
+	this->textManager.loadTexts("texts/game_start_texts.json", this->game->fontManager.getFontManager());
 
 	// Assign our sprites
 	this->star.setTexture(this->game->textureManager.getRef("star"));
@@ -20,16 +22,27 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 
 	this->illuminatiTriangle.setTexture(this->game->textureManager.getRef("illuminatiTriangle"));
 	this->illuminatiTriangle.setOrigin(288, 290);
+	this->illuminatiTriangle.setScale(0.1, 0.1);
 
 	IntRect rectSourceHoward(0, 0, 106, 586);
 	this->howardTheAlien.setTexture(this->game->textureManager.getRef("howardTheAlien"));
 	howardTheAlien.setPosition(500, 200);
 	howardTheAlien.setOrigin(53, 283);
-	howardTheAlien.setScale(4, 4);
+	howardTheAlien.setScale(0.1, 0.1);
 
 	// Adds animation to our howardTheAlien png sheet.
-	// If you have any questions how the animations work you can ask me - DS
-	this->game->animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, 0.07);
+	// If you have any questions how the animations work you can ask me - DS	
+	float howardTheAlienAnimationSpeed = 0.06;
+	this->game->animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, howardTheAlienAnimationSpeed);
+
+	// Assign our rotations to each individual sprite we want to be rotated.
+	int illuminatiTriangleRotationDuration = 2; // In seconds
+	float illuminatiTriangleRotationSpeed = 8;
+	this->game->rotationHandler.addRotation("illuminatiTriangle", this->illuminatiTriangle, illuminatiTriangleRotationDuration, illuminatiTriangleRotationSpeed);
+	
+	int howardTheAlienRotationDuration = 2;
+	float howardTheAlienRotationSpeed = 25;
+	this->game->rotationHandler.addRotation("howardTheAlien", this->howardTheAlien, howardTheAlienRotationDuration, howardTheAlienRotationSpeed);
 
 	// Assign our sounds
 	this->star_sound.setBuffer((this->game->soundManager.getBuffer("star")));
@@ -41,6 +54,9 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 void GameStateStart::draw(const float dt) {
 	this->game->window.clear();
 	this->game->window.draw(this->game->background);
+
+	// Draw our texts
+	this->game->window.draw(textManager.getText("title"));
 
 	// Draw our triangle vertices
 	for (const auto& vertex : this->vertices) {
@@ -86,6 +102,18 @@ void GameStateStart::update(const float dt) {
 		}
 	}
 
+	if (showIlluminatiTriangle) {
+		this->game->rotationHandler.update("illuminatiTriangle", dt);
+
+		if (illuminatiTriangle.getScale().x < 1.5) {
+			float illuminatiTriangleScaleSpeed = 1.03;
+			illuminatiTriangle.scale(Vector2f(illuminatiTriangleScaleSpeed, illuminatiTriangleScaleSpeed));
+		}
+		else {
+			this->game->rotationHandler.stopRotation("illuminatiTriangle");
+		}
+	}
+
 	// Same thing similar to our illuminati triangle.
 	secondsUntilShow = 10;
 	if ((!showHowardTheAlien) && (timer > secondsUntilShow)) {
@@ -102,7 +130,16 @@ void GameStateStart::update(const float dt) {
 	// While Howard is out and about, we update the IntRect with the animationHandler.
 	if (showHowardTheAlien) {
 		this->game->animationHandler.update("howardTheAlien", dt);
+		this->game->rotationHandler.update("howardTheAlien", dt);
 
+		if (howardTheAlien.getScale().x < 5) {
+			float howardTheAlienScaleSpeed = 1.03;
+			howardTheAlien.scale(howardTheAlienScaleSpeed, howardTheAlienScaleSpeed);
+		}
+		else {
+			this->game->rotationHandler.stopRotation("howardTheAlien");
+			showIlluminatiTriangle = false;
+		}
 	}
 }
 
@@ -186,5 +223,4 @@ Vector2f GameStateStart::calculateTriangleCenter() {
 
 	return Vector2f(centerX, centerY);
 }
-
 

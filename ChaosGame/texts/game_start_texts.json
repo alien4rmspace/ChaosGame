@@ -1,0 +1,13 @@
+{
+    "texts": [
+        {
+            "name": "title",
+            "content": "Chaos Game",
+            "position": { "x": 800, "y": 50 },
+            "size": 80,
+            "color": { "r": 255, "g": 255, "b": 0 },
+            "font": "debug",
+            "style": "bold"
+        }
+    ]
+}

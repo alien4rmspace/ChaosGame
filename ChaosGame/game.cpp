@@ -7,6 +7,7 @@
 Game::Game() {
 	this->loadTextures();
 	this->loadSounds();
+	this->loadFonts();
 
 	this->window.create(VideoMode(1920, 1080), "Chaos Game by Damian", Style::Default);
 	this->window.setFramerateLimit(60);
@@ -64,6 +65,8 @@ void Game::loadTextures() {
 	textureManager.loadTexture("asteroid", "images/asteroid.png");
 	textureManager.loadTexture("illuminatiTriangle", "images/illuminati_triangle.png");
 	textureManager.loadTexture("howardTheAlien", "images/howard_the_alien_sprite_sheet.png");
+
+	cout << "Loaded Textures into Texture Manager." << endl;
 }
 
 void Game::loadSounds() {
@@ -72,4 +75,13 @@ void Game::loadSounds() {
 	soundManager.loadBuffer("asteroid_woosh", "sounds/asteroid_woosh.wav");
 	soundManager.loadBuffer("x_files", "sounds/x_files.wav");
 	soundManager.loadBuffer("WHAT_DAH_HELL", "sounds/WHAT_DAH_HELL.wav");
+
+	cout << "Loaded Sounds into Sounds Manager." << endl;
+}
+
+void Game::loadFonts() {
+	fontManager.loadFont("debug", "fonts/Debug.otf");
+	fontManager.loadFont("power_smash", "fonts/Power Smash.ttf");
+
+	cout << "Loaded Fonts into Fonts Manager." << endl;
 }

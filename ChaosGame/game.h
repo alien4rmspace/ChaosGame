@@ -8,6 +8,12 @@
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "animation_handler.h"
+#include "rotation_handler.h"
+#include "font_manager.h"
+#include "text_box_manager.h"
+#include "text_manager.h"
+#include "animation_handler.h"
+#include "text_manager.h"
 
 using namespace std;
 using namespace sf;
@@ -25,7 +31,10 @@ public:
 	TextureManager textureManager;
 	Sprite background;
 	SoundManager soundManager;
+	FontManager fontManager;
+	TextBoxManager textBoxManager;
 	AnimationHandler animationHandler;
+	RotationHandler rotationHandler;
 
 	void pushState(GameState* state);
 	void popState();
@@ -37,4 +46,5 @@ public:
 private:
 	void loadTextures();
 	void loadSounds();
+	void loadFonts();
 };

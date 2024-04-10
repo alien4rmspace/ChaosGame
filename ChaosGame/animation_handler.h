@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 using namespace sf;
@@ -16,6 +16,7 @@ public:
 	int lastRect;
 	int resetRect;
 	float animationSpeed;
+	bool hasResetted = false;
 
 	float time = 0;
 };
@@ -23,13 +24,14 @@ public:
 class AnimationHandler {
 public:
 	AnimationHandler() {
+		cout << "Animation Handler loaded successfully" << endl;
 	}
 	~AnimationHandler() {
 	}
 
-	void addAnimation(const String& name, Sprite& sprite, IntRect rectSource, unsigned short int moveRect, unsigned short int lastRect, unsigned short int resetRect, const float animationSpeed);
-	void update(const String& string, const float dt);
+	void addAnimation(const string& name, Sprite& sprite, IntRect rectSource, unsigned short int moveRect, unsigned short int lastRect, unsigned short int resetRect, const float animationSpeed);
+	void update(const string& string, const float dt);
 
 private:
-	map <String, Animation> animations;
+	unordered_map <string, Animation> animations;
 };

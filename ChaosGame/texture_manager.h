@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -19,5 +19,5 @@ public:
 	Texture& getRef(const string& texture);
 
 private:
-	map<string, Texture> textures;
+	unordered_map<string, Texture> textures;
 };
