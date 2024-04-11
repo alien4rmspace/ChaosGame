@@ -1,4 +1,4 @@
-#include "MovingSprite.h"
+#include "DEPRECATED_MovingSprite.h"
 
 MovingSprite::MovingSprite(RenderWindow& window, Texture& texture, Vector2f position, Vector2f endPosition, float moveSpeed, float scale) : window(window), texture(texture), position(position), endPosition(endPosition), moveSpeed(moveSpeed), scale(scale){
 	Sprite* sprite = new Sprite;

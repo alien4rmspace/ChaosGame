@@ -24,7 +24,7 @@ void TextManager::loadTexts(const string& textsFileName, FontManager& fontManage
     return;
   }
 
-  // Read JSON data from file
+  // Read JSON data from file documentation on nlohmann github, it's my first time using this too
   json jsonData;
   try {
     file >> jsonData;
