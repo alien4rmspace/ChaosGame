@@ -2,7 +2,14 @@
 
 void TextManager::addText(const auto& _text, FontManager& fontManager) {
   Text text;
-  text.setString(string(_text["content"]));
+  string contentHolder = "";
+
+  for (const auto& text : _text["content"]) {
+    cout << text << endl;
+    contentHolder += text;
+  }
+
+  text.setString(contentHolder);
   text.setFont(fontManager.getFont(string(_text["font"])));
   text.setPosition(_text["position"].at("x"), _text["position"].at("y"));
   text.setCharacterSize(_text["size"]);

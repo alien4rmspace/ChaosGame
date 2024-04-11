@@ -57,6 +57,7 @@ void GameStateStart::draw(const float dt) {
 
 	// Draw our texts
 	this->game->window.draw(textManager.getText("title"));
+	this->game->window.draw(textManager.getText("user_instructions"));
 
 	// Draw our triangle vertices
 	for (const auto& vertex : this->vertices) {

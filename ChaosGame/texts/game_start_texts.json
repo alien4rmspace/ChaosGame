@@ -3,8 +3,24 @@
         {
             "name": "title",
             "content": "Chaos Game",
-            "position": { "x": 800, "y": 50 },
-            "size": 80,
+            "position": { "x": 817, "y": 50 },
+            "size": 100,
+            "color": { "r": 255, "g": 255, "b": 0 },
+            "font": "debug",
+            "style": "bold"
+        },
+        {
+            "name": "user_instructions",
+            "content": [
+						"Welcome wandering stranger to the CHAOS game!\n",
+                        "To play this game you will need to select 3 points\n",
+                        "on the screen to create a triangle using the left\n",
+                        "mouse button.\n",
+                        "Then you will select a 4th point to begin...\n",
+                        "\n\t\t\t\t\t\t\tTHE CHAOS"
+						],
+            "position": { "x": 850, "y": 450 },
+            "size": 20,
             "color": { "r": 255, "g": 255, "b": 0 },
             "font": "debug",
             "style": "bold"
