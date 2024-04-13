@@ -95,7 +95,7 @@ void GameStateStart::update(const float dt) {
 	}
 
 	if (startTimer) {
-		//timer += dt;
+		timer += dt;
 	}
 
 	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.
@@ -227,7 +227,7 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 			asteroidVertex.color = Color::White;
 
 			// Adjust position for each vertex of the quad
-			float asteroidSpriteScale = 25;
+			float asteroidSpriteScale = 20;
 			switch (j) {
 				case 0:
 					asteroidVertex.position = Vector2(x, y);
