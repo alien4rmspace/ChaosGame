@@ -21,7 +21,6 @@ public:
 	void loadFont(const string& name, const string& fontFileName);
   Font& getFont(const string& name);
   FontManager& getFontManager();
-	const unordered_map<string, Font>& getFonts();
 
 	// Used to debug.
 	void listFonts();

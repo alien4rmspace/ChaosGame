@@ -10,7 +10,6 @@
 #include "animation_handler.h"
 #include "rotation_handler.h"
 #include "font_manager.h"
-#include "text_box_manager.h"
 #include "text_manager.h"
 #include "animation_handler.h"
 #include "text_manager.h"
@@ -32,7 +31,6 @@ public:
 	Sprite background;
 	SoundManager soundManager;
 	FontManager fontManager;
-	TextBoxManager textBoxManager;
 	AnimationHandler animationHandler;
 	RotationHandler rotationHandler;
 

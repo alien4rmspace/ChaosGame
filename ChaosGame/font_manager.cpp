@@ -15,11 +15,6 @@ FontManager& FontManager::getFontManager() {
 	return *this;
 }
 
-
-const unordered_map<string, Font>& FontManager::getFonts() {
-	return this->fonts;
-}
-
 void FontManager::listFonts() {
 	for (const auto& map : fonts) {
 		cout << map.first << endl;

@@ -5,7 +5,6 @@ void TextManager::addText(const auto& _text, FontManager& fontManager) {
   string contentHolder = "";
 
   for (const auto& text : _text["content"]) {
-    cout << text << endl;
     contentHolder += text;
   }
 
@@ -39,6 +38,6 @@ void TextManager::loadTexts(const string& textsFileName, FontManager& fontManage
   }
 }
 
-Text TextManager::getText(const string& name) {
+Text& TextManager::getText(const string& name) {
 	return texts.at(name);
 }

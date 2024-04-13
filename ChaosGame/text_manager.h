@@ -25,7 +25,7 @@ public:
 
 	void addText(const auto& _text, FontManager& fontManager);
 	void loadTexts(const string& textsFileName, FontManager& font);
-	Text getText(const string& name);
+	Text& getText(const string& name);
 
 private:
 	unordered_map<string, Text> texts;
