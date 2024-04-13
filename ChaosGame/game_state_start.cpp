@@ -71,6 +71,13 @@ void GameStateStart::draw(const float dt) {
 	//	this->game->window.draw(asteroid);
 	//}
 
+	pointsBuffer.create(pointsVertex.size());
+	pointsBuffer.setPrimitiveType(Quads);
+
+	pointsBuffer.update(pointsVertex.data());
+
+	this->game->window.draw(pointsBuffer, asteroid.getTexture());
+
 	// Draw our sprites
 	if (showIlluminatiTriangle) {
 		this->game->window.draw(illuminatiTriangle);
@@ -220,21 +227,22 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 			asteroidVertex.color = Color::White;
 
 			// Adjust position for each vertex of the quad
+			float asteroidSpriteScale = 25;
 			switch (j) {
 				case 0:
 					asteroidVertex.position = Vector2(x, y);
 					asteroidVertex.texCoords = Vector2f(0, 0);
 					break;
 				case 1:
-					asteroidVertex.position = Vector2(x + 10, y);
+					asteroidVertex.position = Vector2(x + asteroidSpriteScale, y);
 					asteroidVertex.texCoords = Vector2f(512, 0);
 					break;
 				case 2:
-					asteroidVertex.position = Vector2(x + 10, y + 10);
+					asteroidVertex.position = Vector2(x + asteroidSpriteScale, y + asteroidSpriteScale);
 					asteroidVertex.texCoords = Vector2f(512, 512);
 					break;
 				case 3:
-					asteroidVertex.position = Vector2(x, y + 10);
+					asteroidVertex.position = Vector2(x, y + asteroidSpriteScale);
 					asteroidVertex.texCoords = Vector2f(512, 0);
 					break;
 			}
