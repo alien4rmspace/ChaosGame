@@ -37,6 +37,9 @@ private:
 	Vector2f vertex;
 	vector<Vector2f> vertices;
 	vector<Vector2f> points;
+	vector<Vertex> pointsVertex;
+
+	VertexBuffer pointsBuffer;
 
 	Sprite star;
 	Sprite asteroid;

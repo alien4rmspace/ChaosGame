@@ -66,10 +66,10 @@ void GameStateStart::draw(const float dt) {
 	}
 
 	// Draw our points
-	for (const auto& point : this->points) {
-		asteroid.setPosition(point);
-		this->game->window.draw(asteroid);
-	}
+	//for (const auto& point : this->points) {
+	//	asteroid.setPosition(point);
+	//	this->game->window.draw(asteroid);
+	//}
 
 	// Draw our sprites
 	if (showIlluminatiTriangle) {
@@ -88,7 +88,7 @@ void GameStateStart::update(const float dt) {
 	}
 
 	if (startTimer) {
-		timer += dt;
+		//timer += dt;
 	}
 
 	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.
@@ -213,6 +213,34 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 		float y = (this->vertex.y + lastPoint.y) / 2.f;
 
 		this->points.push_back(Vector2(x, y));
+
+		// Create a quad with four vertices
+		for (unsigned short j = 0; j < 4; j++) {
+			Vertex asteroidVertex;
+			asteroidVertex.color = Color::White;
+
+			// Adjust position for each vertex of the quad
+			switch (j) {
+				case 0:
+					asteroidVertex.position = Vector2(x, y);
+					asteroidVertex.texCoords = Vector2f(0, 0);
+					break;
+				case 1:
+					asteroidVertex.position = Vector2(x + 10, y);
+					asteroidVertex.texCoords = Vector2f(512, 0);
+					break;
+				case 2:
+					asteroidVertex.position = Vector2(x + 10, y + 10);
+					asteroidVertex.texCoords = Vector2f(512, 512);
+					break;
+				case 3:
+					asteroidVertex.position = Vector2(x, y + 10);
+					asteroidVertex.texCoords = Vector2f(512, 0);
+					break;
+			}
+
+			pointsVertex.push_back(asteroidVertex);
+		}
 	}
 }
 
