@@ -8,6 +8,9 @@
 GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVertices - 1) {
 	this->game = game;
 
+	// Set our vertex buffer primitive type
+	pointsBuffer.setPrimitiveType(Quads);
+
 	// Create our texts
 	this->textManager.loadTexts("texts/game_start_texts.json", this->game->fontManager.getFontManager());
 
@@ -52,6 +55,7 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 }
 
 void GameStateStart::draw(const float dt) {
+	// Draw background
 	this->game->window.clear();
 	this->game->window.draw(this->game->background);
 
@@ -71,14 +75,9 @@ void GameStateStart::draw(const float dt) {
 	//	this->game->window.draw(asteroid);
 	//}
 
-	pointsBuffer.create(pointsVertex.size());
-	pointsBuffer.setPrimitiveType(Quads);
-
-	pointsBuffer.update(pointsVertex.data());
-
-	this->game->window.draw(pointsBuffer, asteroid.getTexture());
-
 	// Draw our sprites
+	this->game->window.draw(pointsBuffer, asteroid.getTexture()); // draws vertexBuffer
+
 	if (showIlluminatiTriangle) {
 		this->game->window.draw(illuminatiTriangle);
 	}
@@ -92,6 +91,8 @@ void GameStateStart::update(const float dt) {
 	// Our points generator
 	if (this->points.size() > 0) {
 		generatePoint(kPointsToGenerate);
+		pointsBuffer.create(pointsVertex.size());
+		pointsBuffer.update(pointsVertex.data());
 	}
 
 	if (startTimer) {
