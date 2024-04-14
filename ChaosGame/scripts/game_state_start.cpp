@@ -70,14 +70,9 @@ void GameStateStart::draw(const float dt) {
 	}
 
 	// Draw our points
-	//for (const auto& point : this->points) {
-	//	asteroid.setPosition(point);
-	//	this->game->window.draw(asteroid);
-	//}
+	this->game->window.draw(pointsBuffer, asteroid.getTexture()); // draws vertexBuffer asteroids
 
 	// Draw our sprites
-	this->game->window.draw(pointsBuffer, asteroid.getTexture()); // draws vertexBuffer
-
 	if (showIlluminatiTriangle) {
 		this->game->window.draw(illuminatiTriangle);
 	}
@@ -90,7 +85,9 @@ void GameStateStart::draw(const float dt) {
 void GameStateStart::update(const float dt) {
 	// Our points generator
 	if (this->points.size() > 0) {
-		generatePoint(kPointsToGenerate);
+		thread pointGenerationThread(&GameStateStart::generatePoint, this, kPointsToGenerate);
+		pointGenerationThread.detach();
+
 		pointsBuffer.create(pointsVertex.size());
 		pointsBuffer.update(pointsVertex.data());
 	}
