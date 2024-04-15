@@ -20,7 +20,7 @@ public:
 
 private:
 	const int kMaxVertices = 3;
-	const int kPointsToGenerate = 2;
+	const int kPointsToGenerate = 3;
 	float timer = 0;
 
 	bool startTimer = false;

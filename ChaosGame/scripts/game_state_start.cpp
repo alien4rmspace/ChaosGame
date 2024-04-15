@@ -246,7 +246,7 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 			asteroidVertex.color = Color::White;
 
 			// Adjust position for each vertex of the quad
-			float asteroidSpriteScale = 20;
+			float asteroidSpriteScale = 15;
 			switch (j) {
 				case 0:
 					asteroidVertex.position = Vector2(x, y);
