@@ -99,12 +99,14 @@ void GameStateStart::draw(const float dt) {
 
 void GameStateStart::update(const float dt) {
 	// Our points generator
-	if (this->points.size() > 0) {
-		thread pointGenerationThread(&GameStateStart::generatePoint, this, kPointsToGenerate);
-		pointGenerationThread.detach();
+	if (timer < 30) {
+		if (this->points.size() > 0) {
+			thread pointGenerationThread(&GameStateStart::generatePoint, this, kPointsToGenerate);
+			pointGenerationThread.detach();
 
-		pointsBuffer.create(pointsVertex.size());
-		pointsBuffer.update(pointsVertex.data());
+			pointsBuffer.create(pointsVertex.size());
+			pointsBuffer.update(pointsVertex.data());
+		}
 	}
 
 	if (startTimer) {
@@ -246,7 +248,7 @@ void GameStateStart::generatePoint(unsigned short int amount) {
 			asteroidVertex.color = Color::White;
 
 			// Adjust position for each vertex of the quad
-			float asteroidSpriteScale = 15;
+			float asteroidSpriteScale = 10;
 			switch (j) {
 				case 0:
 					asteroidVertex.position = Vector2(x, y);
