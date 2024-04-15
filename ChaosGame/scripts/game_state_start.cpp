@@ -71,7 +71,11 @@ void GameStateStart::draw(const float dt) {
 
 	// Draw our texts
 	this->game->window.draw(textManager.getText("title"));
-	this->game->window.draw(textManager.getText("user_instructions"));
+
+	while (showUserInstructions)
+	{
+		this->game->window.draw(textManager.getText("user_instructions"));
+	}
 
 	// Draw our triangle vertices
 	for (const auto& vertex : this->vertices) {
@@ -198,6 +202,7 @@ void GameStateStart::handleInput() {
 					else if (this->points.size() == 0) {
 						android_sound.play();
 						startTimer = true;
+						showUserInstructions = false;
 
 						this->points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 					}

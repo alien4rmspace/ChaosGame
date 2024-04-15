@@ -24,6 +24,7 @@ private:
 	float timer = 0;
 
 	bool startTimer = false;
+	bool showUserInstructions = true;
 	bool showIlluminatiTriangle = false;
 	bool showHowardTheAlien = false;
 	bool playedXFiles = false;
