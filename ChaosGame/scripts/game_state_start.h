@@ -46,10 +46,14 @@ private:
 	Sprite illuminatiTriangle;
 	Sprite howardTheAlien;
 
+	Sound game_start_sound;
+	Sound background_sound;
 	Sound star_sound;
 	Sound android_sound;
 	Sound x_files_sound;
 	Sound WHAT_DAH_HELL_sound;
 
 	TextManager textManager;
+
+	TypeWriter typeWriter;
 };

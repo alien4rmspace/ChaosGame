@@ -70,6 +70,8 @@ void Game::loadTextures() {
 }
 
 void Game::loadSounds() {
+	soundManager.loadBuffer("game_start_sound", "sounds/game_start_sound.wav");
+	soundManager.loadBuffer("background_sound", "sounds/background_sound.wav");
 	soundManager.loadBuffer("star", "sounds/star_gazing.wav");
 	soundManager.loadBuffer("android_notification", "sounds/android_notification.wav");
 	soundManager.loadBuffer("asteroid_woosh", "sounds/asteroid_woosh.wav");

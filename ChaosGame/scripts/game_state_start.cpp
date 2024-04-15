@@ -14,6 +14,12 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	// Create our texts
 	this->textManager.loadTexts("texts/game_start_texts.json", this->game->fontManager.getFontManager());
 
+	// Set our typewriter effect to texts
+	thread typeWriterTitleThread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("title")));
+	thread typeWriterUserInstructionsThread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("user_instructions")));
+	typeWriterUserInstructionsThread.detach();
+	typeWriterTitleThread.detach();
+
 	// Assign our sprites
 	this->star.setTexture(this->game->textureManager.getRef("star"));
 	this->star.setOrigin(128, 128);
@@ -38,25 +44,29 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	float howardTheAlienAnimationSpeed = 0.06;
 	this->game->animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, howardTheAlienAnimationSpeed);
 
-	// Assign our rotations to each individual sprite we want to be rotated.
+	// Assign our rotations to each individual sprite we want to be rotated with the rotation handler.
 	int illuminatiTriangleRotationDuration = 2; // In seconds
-	float illuminatiTriangleRotationSpeed = 8;
+	float illuminatiTriangleRotationSpeed = 10;
 	this->game->rotationHandler.addRotation("illuminatiTriangle", this->illuminatiTriangle, illuminatiTriangleRotationDuration, illuminatiTriangleRotationSpeed);
 	
 	int howardTheAlienRotationDuration = 2;
-	float howardTheAlienRotationSpeed = 25;
+	float howardTheAlienRotationSpeed = 40;
 	this->game->rotationHandler.addRotation("howardTheAlien", this->howardTheAlien, howardTheAlienRotationDuration, howardTheAlienRotationSpeed);
 
 	// Assign our sounds
+	this->game_start_sound.setBuffer((this->game->soundManager.getBuffer("game_start_sound")));
+	this->background_sound.setBuffer((this->game->soundManager.getBuffer("background_sound")));
 	this->star_sound.setBuffer((this->game->soundManager.getBuffer("star")));
 	this->android_sound.setBuffer((this->game->soundManager.getBuffer("android_notification")));
 	this->x_files_sound.setBuffer((this->game->soundManager.getBuffer("x_files")));
 	this->WHAT_DAH_HELL_sound.setBuffer((this->game->soundManager.getBuffer("WHAT_DAH_HELL")));
+
+	game_start_sound.play();
+	background_sound.setLoop("true");
 }
 
 void GameStateStart::draw(const float dt) {
 	// Draw background
-	this->game->window.clear();
 	this->game->window.draw(this->game->background);
 
 	// Draw our texts
@@ -69,7 +79,8 @@ void GameStateStart::draw(const float dt) {
 		this->game->window.draw(star);
 	}
 
-	// Draw our points
+	// Draw our points. Instead of iterating through our points vector, we just keep it
+	// loaded in a vertex buffer to save cpu usage.
 	this->game->window.draw(pointsBuffer, asteroid.getTexture()); // draws vertexBuffer asteroids
 
 	// Draw our sprites
@@ -94,6 +105,10 @@ void GameStateStart::update(const float dt) {
 
 	if (startTimer) {
 		timer += dt;
+	}
+
+	if (game_start_sound.getStatus() == 0 && background_sound.getStatus() == 0) {
+		background_sound.play();
 	}
 
 	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.

@@ -13,6 +13,7 @@
 #include "text_manager.h"
 #include "animation_handler.h"
 #include "text_manager.h"
+#include "typewriter.h"
 
 using namespace std;
 using namespace sf;
