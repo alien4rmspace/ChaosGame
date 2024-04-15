@@ -72,7 +72,7 @@ void GameStateStart::draw(const float dt) {
 	// Draw our texts
 	this->game->window.draw(textManager.getText("title"));
 
-	while (showUserInstructions)
+	if (showUserInstructions)
 	{
 		this->game->window.draw(textManager.getText("user_instructions"));
 	}
