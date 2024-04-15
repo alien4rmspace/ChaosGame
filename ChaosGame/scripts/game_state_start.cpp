@@ -194,6 +194,7 @@ void GameStateStart::handleInput() {
 					cout << "mouse y: " << event.mouseButton.y << endl;
 
 					// If our vector has less than 3 vertices, continue selecting vertices.
+					// If not, check if points is empty, if empty then push back point
 					if (this->vertices.size() < this->kMaxVertices) {
 						star_sound.play();
 
