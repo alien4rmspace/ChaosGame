@@ -21,7 +21,17 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	typeWriterTitle_2Thread.detach();
 
 	// Assign our sprites
-	this->spriteManager.loadSprites("texts/game_start_sprites.json", this->game->textureManager.getTextureManager());
+	this->star.setTexture(this->game->textureManager.getRef("star"));
+	this->star.setOrigin(128, 128);
+	this->star.setScale(0.5, 0.5);
+
+	this->asteroid.setTexture(this->game->textureManager.getRef("asteroid"));
+	this->asteroid.setOrigin(206, 206);
+	this->asteroid.setScale(0.04, 0.04);
+
+	this->illuminatiTriangle.setTexture(this->game->textureManager.getRef("illuminatiTriangle"));
+	this->illuminatiTriangle.setOrigin(288, 290);
+	this->illuminatiTriangle.setScale(0.1, 0.1);
 
 	IntRect rectSourceHoward(0, 0, 106, 586);
 	this->howardTheAlien.setTexture(this->game->textureManager.getRef("howardTheAlien"));
@@ -38,7 +48,7 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	int illuminatiTriangleRotationDuration = 2; // In seconds
 	float illuminatiTriangleRotationSpeed = 10;
 	this->game->rotationHandler.addRotation("illuminatiTriangle", this->illuminatiTriangle, illuminatiTriangleRotationDuration, illuminatiTriangleRotationSpeed);
-	
+
 	int howardTheAlienRotationDuration = 2;
 	float howardTheAlienRotationSpeed = 40;
 	this->game->rotationHandler.addRotation("howardTheAlien", this->howardTheAlien, howardTheAlienRotationDuration, howardTheAlienRotationSpeed);
@@ -104,7 +114,7 @@ void GameStateStart::update(const float dt) {
 
 	if (startTimer) {
 		timer += dt;
-		
+
 		// Starts title physics
 		if (!bounce && showTitle) {
 			textPosition = this->textManager.getText("title_1").getPosition();
@@ -121,7 +131,7 @@ void GameStateStart::update(const float dt) {
 				}
 			}
 		}
-		if (bounce && showTitle){
+		if (bounce && showTitle) {
 			textPosition = this->textManager.getText("title_1").getPosition();
 			this->textManager.getText("title_1").setPosition(textPosition.x - titleDropAmount, textPosition.y / (dt + 1));
 			textPosition = this->textManager.getText("title_2").getPosition();
@@ -172,7 +182,7 @@ void GameStateStart::update(const float dt) {
 			playedWHATDAHHELL = true;
 		}
 	}
-	
+
 	// While Howard is out and about, we update the IntRect with the animationHandler.
 	if (showHowardTheAlien) {
 		this->game->animationHandler.update("howardTheAlien", dt);
