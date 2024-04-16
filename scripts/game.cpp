@@ -9,7 +9,7 @@ Game::Game() {
 	this->loadSounds();
 	this->loadFonts();
 
-	this->window.create(VideoMode(1920, 1080), "Chaos Game by Damian", Style::Default);
+	this->window.create(VideoMode(1920, 1080), "Chaos Game by Damian & Kenneth", Style::Default);
 	this->window.setFramerateLimit(60);
 
 	this->background.setTexture(this->textureManager.getRef("background"));

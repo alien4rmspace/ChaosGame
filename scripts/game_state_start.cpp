@@ -105,6 +105,7 @@ void GameStateStart::update(const float dt) {
 	if (startTimer) {
 		timer += dt;
 		
+		// Starts title physics
 		if (!bounce && showTitle) {
 			textPosition = this->textManager.getText("title_1").getPosition();
 			this->textManager.getText("title_1").setPosition(textPosition.x - titleDropAmount, ((textPosition.y + 1) * (dt + 1)));
@@ -120,7 +121,7 @@ void GameStateStart::update(const float dt) {
 				}
 			}
 		}
-		else if (bounce && showTitle){
+		if (bounce && showTitle){
 			textPosition = this->textManager.getText("title_1").getPosition();
 			this->textManager.getText("title_1").setPosition(textPosition.x - titleDropAmount, textPosition.y / (dt + 1));
 			textPosition = this->textManager.getText("title_2").getPosition();
@@ -128,9 +129,6 @@ void GameStateStart::update(const float dt) {
 			if (textManager.getText("title_1").getPosition().y < titleBounceTo) {
 				bounce = false;
 			}
-		}
-		else {
-			// do nothing
 		}
 	}
 
