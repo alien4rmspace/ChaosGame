@@ -99,7 +99,7 @@ void GameStateStart::draw(const float dt) {
 
 void GameStateStart::update(const float dt) {
 	// Our points generator
-	int secondsToGenerate = 42;
+	int secondsToGenerate = 60;
 	if (timer < secondsToGenerate) {
 		if (this->points.size() > 0) {
 			thread pointGenerationThread(&GameStateStart::generatePoint, this, kPointsToGenerate);

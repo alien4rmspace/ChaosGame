@@ -12,10 +12,6 @@ void AnimationHandler::update(const string& name, const float dt) {
 	animation.time += dt;
 	int frame = int(animation.time / animation.animationSpeed);
 
-	//cout << "Address of sprite without () " << &animations.at(name).sprite << endl;
-	//cout << "Address of sprite with ()" << &(animations.at(name).sprite) << endl;
-	//cout << "Address of sprite " << &(animations[name].sprite) << endl;
-
 	// If animation's intRect exceeds our sprite intRect bounds (lastRect), 
 	// reset the animation to the frame we want and reset the time as well.
 	if (animation.rectSource.left >= animation.lastRect) {
