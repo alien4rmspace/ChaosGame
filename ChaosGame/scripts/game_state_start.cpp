@@ -13,10 +13,12 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	this->textManager.loadTexts("texts/game_start_texts.json", this->game->fontManager.getFontManager());
 
 	// Set our typewriter effect to texts
-	thread typeWriterTitleThread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("title")));
+	thread typeWriterTitle_1Thread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("title_1")));
+	thread typeWriterTitle_2Thread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("title_2")));
 	thread typeWriterUserInstructionsThread(&TypeWriter::startTyping, &typeWriter, ref(this->textManager.getText("user_instructions")));
 	typeWriterUserInstructionsThread.detach();
-	typeWriterTitleThread.detach();
+	typeWriterTitle_1Thread.detach();
+	typeWriterTitle_2Thread.detach();
 
 	// Assign our sprites
 	this->star.setTexture(this->game->textureManager.getRef("star"));
@@ -68,8 +70,10 @@ void GameStateStart::draw(const float dt) {
 	this->game->window.draw(this->game->background);
 
 	// Draw our texts
-	this->game->window.draw(textManager.getText("title"));
-
+	if (showTitle) {
+		this->game->window.draw(textManager.getText("title_1"));
+		this->game->window.draw(textManager.getText("title_2"));
+	}
 	if (showUserInstructions)
 	{
 		this->game->window.draw(textManager.getText("user_instructions"));
@@ -110,6 +114,34 @@ void GameStateStart::update(const float dt) {
 
 	if (startTimer) {
 		timer += dt;
+		
+		if (!bounce && showTitle) {
+			textPosition = this->textManager.getText("title_1").getPosition();
+			this->textManager.getText("title_1").setPosition(textPosition.x - titleDropAmount, ((textPosition.y + 1) * (dt + 1)));
+			textPosition = this->textManager.getText("title_2").getPosition();
+			this->textManager.getText("title_2").setPosition(textPosition.x + titleDropAmount, ((textPosition.y + 1) * (dt + 1)));
+			titleDropCounter += titleDropAmount;
+			if (textPosition.y > 900) {
+				bounce = true;
+				titleDropAmount *= 1.1;
+				titleBounceTo = titleDropCounter;
+				if (titleDropCounter > 850) {
+					showTitle = false;
+				}
+			}
+		}
+		else if (bounce && showTitle){
+			textPosition = this->textManager.getText("title_1").getPosition();
+			this->textManager.getText("title_1").setPosition(textPosition.x - titleDropAmount, textPosition.y / (dt + 1));
+			textPosition = this->textManager.getText("title_2").getPosition();
+			this->textManager.getText("title_2").setPosition(textPosition.x + titleDropAmount, textPosition.y / (dt + 1));
+			if (textManager.getText("title_1").getPosition().y < titleBounceTo) {
+				bounce = false;
+			}
+		}
+		else {
+			// do nothing
+		}
 	}
 
 	if (game_start_sound.getStatus() == 0 && background_sound.getStatus() == 0) {

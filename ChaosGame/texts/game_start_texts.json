@@ -1,9 +1,18 @@
 {
     "texts": [
         {
-            "name": "title",
-            "content": "Chaos Game",
+            "name": "title_1",
+            "content": "Chaos",
             "position": { "x": 817, "y": 50 },
+            "size": 100,
+            "color": { "r": 255, "g": 255, "b": 0 },
+            "font": "debug",
+            "style": "bold"
+        },
+		{
+            "name": "title_2",
+            "content": "Game",
+            "position": { "x": 1050, "y": 50 },
             "size": 100,
             "color": { "r": 255, "g": 255, "b": 0 },
             "font": "debug",

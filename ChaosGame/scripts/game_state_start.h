@@ -22,18 +22,24 @@ public:
 	Vector2f selectRandomVertice();
 	void generatePoint(unsigned short int amount);
 	Vector2f calculateTriangleCenter();
+	Vector2f textPosition;
 
 private:
 	const int kMaxVertices = 3;
 	const int kPointsToGenerate = 4;
 	float timer = 0;
+	float titleDropAmount = 1;
+	float titleDropCounter = 0;
+	float titleBounceTo = 0;
 
 	bool startTimer = false;
+	bool showTitle = true;
 	bool showUserInstructions = true;
 	bool showIlluminatiTriangle = false;
 	bool showHowardTheAlien = false;
 	bool playedXFiles = false;
 	bool playedWHATDAHHELL = false;
+	bool bounce = false;
 
 	// This is our rng generator, gives better rng than what we learned in class.
 // If any questions feel free to ask me - DS
