@@ -21,17 +21,7 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	typeWriterTitle_2Thread.detach();
 
 	// Assign our sprites
-	this->star.setTexture(this->game->textureManager.getRef("star"));
-	this->star.setOrigin(128, 128);
-	this->star.setScale(0.5, 0.5);
-
-	this->asteroid.setTexture(this->game->textureManager.getRef("asteroid"));
-	this->asteroid.setOrigin(206, 206);
-	this->asteroid.setScale(0.04, 0.04);
-
-	this->illuminatiTriangle.setTexture(this->game->textureManager.getRef("illuminatiTriangle"));
-	this->illuminatiTriangle.setOrigin(288, 290);
-	this->illuminatiTriangle.setScale(0.1, 0.1);
+	this->spriteManager.loadSprites("texts/game_start_sprites.json", this->game->textureManager.getTextureManager());
 
 	IntRect rectSourceHoward(0, 0, 106, 586);
 	this->howardTheAlien.setTexture(this->game->textureManager.getRef("howardTheAlien"));
