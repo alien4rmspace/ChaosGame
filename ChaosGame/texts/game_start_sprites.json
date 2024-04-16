@@ -13,7 +13,7 @@
             "scale": { "x": 0.04, "y": 0.04}
         },
         {
-            "name": "illuminati_Triangle",
+            "name": "illuminatiTriangle",
             "content": "illuminatiTriangle",
             "origin": { "x": 280, "y": 290 },
             "scale": { "x": 0.1, "y": 0.1}

@@ -32,16 +32,16 @@ GameStateStart::GameStateStart(Game* game) : mt(time(nullptr)), dist(0, kMaxVert
 	// Adds animation to our howardTheAlien png sheet.
 	// If you have any questions how the animations work you can ask me - DS	
 	float howardTheAlienAnimationSpeed = 0.06;
-	this->game->animationHandler.addAnimation("howardTheAlien", this->howardTheAlien, rectSourceHoward, 106, 16006, 8480, howardTheAlienAnimationSpeed);
+	this->game->animationHandler.addAnimation("howardTheAlien", this->spriteManager.getSprite("howardTheAlien"), rectSourceHoward, 106, 16006, 8480, howardTheAlienAnimationSpeed);
 
 	// Assign our rotations to each individual sprite we want to be rotated with the rotation handler.
 	int illuminatiTriangleRotationDuration = 2; // In seconds
 	float illuminatiTriangleRotationSpeed = 10;
-	this->game->rotationHandler.addRotation("illuminatiTriangle", this->illuminatiTriangle, illuminatiTriangleRotationDuration, illuminatiTriangleRotationSpeed);
+	this->game->rotationHandler.addRotation("illuminatiTriangle", this->spriteManager.getSprite("illuminatiTriangle"), illuminatiTriangleRotationDuration, illuminatiTriangleRotationSpeed);
 
 	int howardTheAlienRotationDuration = 2;
 	float howardTheAlienRotationSpeed = 40;
-	this->game->rotationHandler.addRotation("howardTheAlien", this->howardTheAlien, howardTheAlienRotationDuration, howardTheAlienRotationSpeed);
+	this->game->rotationHandler.addRotation("howardTheAlien", this->spriteManager.getSprite("howardTheAlien"), howardTheAlienRotationDuration, howardTheAlienRotationSpeed);
 
 	// Assign our sounds
 	this->game_start_sound.setBuffer((this->game->soundManager.getBuffer("game_start_sound")));
@@ -71,21 +71,21 @@ void GameStateStart::draw(const float dt) {
 
 	// Draw our triangle vertices
 	for (const auto& vertex : this->vertices) {
-		star.setPosition(vertex);
-		this->game->window.draw(star);
+		this->spriteManager.getSprite("star").setPosition(vertex);
+		this->game->window.draw(this->spriteManager.getSprite("star"));
 	}
 
 	// Draw our points. Instead of iterating through our points vector, we just keep it
 	// loaded in a vertex buffer to save cpu usage.
-	this->game->window.draw(pointsBuffer, asteroid.getTexture()); // draws vertexBuffer asteroids
+	this->game->window.draw(pointsBuffer, this->spriteManager.getSprite("asteroid").getTexture()); // draws vertexBuffer asteroids
 
 	// Draw our sprites
 	if (showIlluminatiTriangle) {
-		this->game->window.draw(illuminatiTriangle);
+		this->game->window.draw(this->spriteManager.getSprite("illuminatiTriangle"));
 	}
 
 	if (showHowardTheAlien) {
-		this->game->window.draw(howardTheAlien);
+		this->game->window.draw(this->spriteManager.getSprite("howardTheAlien"));
 	}
 }
 
@@ -139,7 +139,7 @@ void GameStateStart::update(const float dt) {
 	// Check if illuminati triangle is not showing, and if timer exceeds set time to show sprite.
 	unsigned short int secondsUntilShow = 4;
 	if ((!showIlluminatiTriangle) && (timer > secondsUntilShow)) {
-		illuminatiTriangle.setPosition(calculateTriangleCenter());
+		this->spriteManager.getSprite("illuminatiTriangle").setPosition(calculateTriangleCenter());
 		showIlluminatiTriangle = true;
 
 		if (!playedXFiles) {
@@ -151,9 +151,9 @@ void GameStateStart::update(const float dt) {
 	if (showIlluminatiTriangle) {
 		this->game->rotationHandler.update("illuminatiTriangle", dt);
 
-		if (illuminatiTriangle.getScale().x < 1.5) {
+		if (this->spriteManager.getSprite("illuminatiTriangle").getScale().x < 1.5) {
 			float illuminatiTriangleScaleSpeed = 1.03;
-			illuminatiTriangle.scale(Vector2f(illuminatiTriangleScaleSpeed, illuminatiTriangleScaleSpeed));
+			this->spriteManager.getSprite("illuminatiTriangle").scale(Vector2f(illuminatiTriangleScaleSpeed, illuminatiTriangleScaleSpeed));
 		}
 		else {
 			this->game->rotationHandler.stopRotation("illuminatiTriangle");
@@ -163,7 +163,7 @@ void GameStateStart::update(const float dt) {
 	// Same thing similar to our illuminati triangle.
 	secondsUntilShow = 10;
 	if ((!showHowardTheAlien) && (timer > secondsUntilShow)) {
-		howardTheAlien.setPosition(calculateTriangleCenter());
+		this->spriteManager.getSprite("howardTheAlien").setPosition(calculateTriangleCenter());
 		showHowardTheAlien = true;
 
 		if (!playedWHATDAHHELL) {
@@ -178,9 +178,9 @@ void GameStateStart::update(const float dt) {
 		this->game->animationHandler.update("howardTheAlien", dt);
 		this->game->rotationHandler.update("howardTheAlien", dt);
 
-		if (howardTheAlien.getScale().x < 5) {
+		if (this->spriteManager.getSprite("howardTheAlien").getScale().x < 5) {
 			float howardTheAlienScaleSpeed = 1.03;
-			howardTheAlien.scale(howardTheAlienScaleSpeed, howardTheAlienScaleSpeed);
+			this->spriteManager.getSprite("howardTheAlien").scale(howardTheAlienScaleSpeed, howardTheAlienScaleSpeed);
 		}
 		else {
 			this->game->rotationHandler.stopRotation("howardTheAlien");
