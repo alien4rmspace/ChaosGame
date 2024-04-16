@@ -1,0 +1,28 @@
+{
+    "sprites": [
+        {
+            "name": "star",
+            "content": "star",
+            "origin": { "x": 128, "y": 128 },
+            "scale": { "x": 0.5, "y": 0.5}
+        },
+        {
+            "name": "asteroid",
+            "content": "asteroid",
+            "origin": { "x": 206, "y": 206 },
+            "scale": { "x": 0.04, "y": 0.04}
+        },
+        {
+            "name": "illuminati_Triangle",
+            "content": "illuminatiTriangle",
+            "origin": { "x": 280, "y": 290 },
+            "scale": { "x": 0.1, "y": 0.1}
+        },
+        {
+            "name": "howardTheAlien",
+            "content": "howardTheAlien",
+            "origin": { "x": 53, "y": 283 },
+            "scale": { "x": 0.1, "y": 0.1}
+        }
+    ]
+}
